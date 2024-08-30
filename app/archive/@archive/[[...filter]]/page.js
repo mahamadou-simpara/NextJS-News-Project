@@ -1,30 +1,51 @@
-import NewsList from "@/components/newsList";
-import { getNewsForYear } from "@/lib/news";
+import NewsList from '@/components/newsList';
+import {
+  getNewsForYear,
+  getAvailableNewsYears,
+  getAvailableNewsMonths,
+  getNewsForYearAndMonth
+} from '@/lib/news';
+import Link from 'next/link';
 
-export default function NewsYearPage ({params}) {
+export default function NewsYearPage({ params }) {
+  let links = getAvailableNewsYears();
+  const year = params.filter?.[0];
+  const month = params.filter?.[1];
 
-    const year = params.year
+  console.log(params.filter);
 
-    const news = getNewsForYear(year)
+  const news = getNewsForYear(year);
 
-    return <div>
-        <h2>Latest News</h2>
-        <NewsList news={news} />
-    </div>
-}
+  let contentToOutput = <p>No specific date picked yet</p>;
 
-import { getAvailableNewsYears } from "@/lib/news"
-import Link from "next/link";
+  if (year && !month) {
+    links = getAvailableNewsMonths(year);
+    contentToOutput = <NewsList news={news} />;
+  }
 
-export default function ArchiveNewsPage () {
+  if (year && month) {
+    const newsFilterByMonth = getNewsForYearAndMonth(year, month);
+    contentToOutput = <NewsList news={newsFilterByMonth} />;
+    links = [];
+  }
 
-    const links = getAvailableNewsYears();
-
-    return <header id="archive-header">       
-    <nav>
-        <ul>
-            {links.map(link => <li key={link}><Link href={`/archive/${link}`}>{link}</Link></li>)}
-        </ul>
-    </nav>
-    </header>
+  return (
+    <>
+      <header id="archive-header">
+        <nav>
+          <ul>
+            {links.map((link) => {
+              let href = year ? `/archive/${year}/${link}` : `/archive/${link}`
+              return (
+                <li key={link}>
+                  <Link href={href}>{link}</Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </header>
+      {contentToOutput}
+    </>
+  );
 }
