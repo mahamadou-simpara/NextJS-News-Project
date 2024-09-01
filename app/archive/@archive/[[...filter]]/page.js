@@ -29,6 +29,10 @@ export default function NewsYearPage({ params }) {
     links = [];
   }
 
+  if(year && !getNewsForYear().includes(+year) || month && !getAvailableNewsMonths(+year).includes(+month)){
+    throw new Error ('Invalid filter')
+  }
+
   return (
     <>
       <header id="archive-header">
