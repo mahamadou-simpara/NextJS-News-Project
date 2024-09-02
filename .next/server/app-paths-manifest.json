@@ -1,6 +1,7 @@
 {
   "/icon.jpg/route": "app/icon.jpg/route.js",
-  "/api/route": "app/api/route.js",
+  "/not-found": "app/not-found.js",
+  "/(content)/news/page": "app/(content)/news/page.js",
   "/(marketing)/page": "app/(marketing)/page.js",
-  "/(content)/news/[slug]/image/page": "app/(content)/news/[slug]/image/page.js"
+  "/(content)/news/[slug]/page": "app/(content)/news/[slug]/page.js"
 }
